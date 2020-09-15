@@ -135,4 +135,19 @@ print(vartot)
 f={'pid':pid,'options':vartot,'quantity':'1'}
 param = urllib.parse.urlencode(f)
 
+# Finalisation de l'ajout au panier
 
+print('\n')
+print(param)
+reponse = req.request('/on/demandware.store/Sites-snse-FR-Site/fr_FR/Cart-AddProduct',method="post",body=param,
+    headers= {
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Pragma': 'no-cache',
+        'Upgrade-Insecure-Requests': '1',
+        'content-type':'application/x-www-form-urlencoded;charset=UTF-8',
+                
+    }
+)
+print(reponse)
