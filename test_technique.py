@@ -88,4 +88,20 @@ tailles = re.findall(r"data-attr-id=\"size\" data-value=\"\d*\s?\d?\/?\d\"",repo
 taille_str= ', '.join(tailles)
 final_size = re.findall(r"data-value=\"\d*\s?\d?\/?\d\"",taille_str)
 
+# saisie de la taille souhaitée :
+size = ', '.join(final_size)
+size_string = size.replace('data-value=', 'size = ').replace(',', ' or ')
+choix=input("choisissez une taille parmis : " + size_string)
+print('\n')
+print(choix)
+f={'chosen=size&dwvar_00013801853801_212':choix}
+choix_t = urllib.parse.urlencode(f)
+print("\n")
+print(choix_t)
+
+# Creation de l'url pour avoir la bonne taille :
+size_url = url_p[0] + "?" + choix_t
+print("\n")
+print(size_url)
+
 
