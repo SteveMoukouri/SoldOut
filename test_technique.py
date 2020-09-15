@@ -104,4 +104,35 @@ size_url = url_p[0] + "?" + choix_t
 print("\n")
 print(size_url)
 
+# Recupération des données utiles pour l'ajout au panier :
+reponse = req.request(url=size_url,
+    headers= {
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Pragma': 'no-cache',
+        'Upgrade-Insecure-Requests': '1',
+    }
+)
+
+id_items = re.findall(r"data-pid=\"\d+\"",reponse)
+pid = re.findall(r"\d+",id_items[0])
+pid = ', '.join(pid)
+optionId = re.findall(r"dwvar_\d+_\d+&",reponse)
+option=re.findall(r"(\d+&)",optionId[0])
+option=', '.join(option)
+option=option[:len(option)-1]
+
+#Ajout des paramètres du POST
+
+var='[{"optionId"'
+var2=':"{}"'.format(option)
+var3=',"selectedValueId":"{}"'.format(choix)
+var4='}]'
+vartot=var+var2+var3+var4
+print("\n VARTOT vAUT :")
+print(vartot)
+f={'pid':pid,'options':vartot,'quantity':'1'}
+param = urllib.parse.urlencode(f)
+
 
