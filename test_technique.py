@@ -63,4 +63,29 @@ reponse = req.request('/on/demandware.store/Sites-snse-FR-Site/fr_FR/Account-Sub
 )
 print(reponse)
 
+# Saisie de l'url par l'utilisateur :
+url_product=input("\n veuillez renseigner l'url de la chaussure souhaitée : ")
+print(url_product)
+url_p = re.findall(r"\/p\/.+\.html",url_product)
+print("l'url est' :  {}.".format(url_p[0]))
+
+#Extraction des différentes tailles dans le code html :
+reponse = req.request(url=url_p[0],
+    headers= {
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'DNT': '1',
+        'Pragma': 'no-cache',
+        'Upgrade-Insecure-Requests': '1',
+    }
+)
+
+if reponse is None:
+    print("ERROR")
+    exit()
+
+tailles = re.findall(r"data-attr-id=\"size\" data-value=\"\d*\s?\d?\/?\d\"",reponse)
+taille_str= ', '.join(tailles)
+final_size = re.findall(r"data-value=\"\d*\s?\d?\/?\d\"",taille_str)
+
 
