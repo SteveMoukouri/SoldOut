@@ -1,3 +1,4 @@
+
 from request import Request, Log
 import re
 import urllib
@@ -66,6 +67,7 @@ url_p = re.findall(r"\/p\/.+\.html",url_product)
 print("l'url est' :  {}.".format(url_p[0]))
 
 #Extraction des différentes tailles dans le code html :
+
 reponse = req.request(url=url_p[0],
     headers= {
         'Cache-Control': 'no-cache',
@@ -85,6 +87,7 @@ taille_str= ', '.join(tailles)
 final_size = re.findall(r"data-value=\"\d*\s?\d?\/?\d\"",taille_str)
 
 # saisie de la taille souhaitée :
+
 size = ', '.join(final_size)
 size_string = size.replace('data-value=', 'size = ').replace(',', ' or ')
 choix=input("choisissez une taille parmis : " + size_string)
@@ -94,6 +97,17 @@ choix_t = urllib.parse.urlencode(f)
 
 # Creation de l'url pour avoir la bonne taille :
 size_url = url_p[0] + "?" + choix_t
+
+prix = re.findall(r"\"price\":\d+\D?\d*,\"",reponse)
+prix_f=', '.join(prix)
+prix_f = re.findall(r"\d+.?\d+",prix_f)
+prix_item = prix_f[0]
+
+#Recuperation qté max :
+qte=0
+nb = float(prix_f[0])
+while (nb*qte <= 500):
+    qte+=1
 
 # Recupération des données utiles pour l'ajout au panier :
 reponse = req.request(url=size_url,
@@ -140,3 +154,27 @@ reponse = req.request('/on/demandware.store/Sites-snse-FR-Site/fr_FR/Cart-AddPro
     }
 )
 print(reponse)
+
+# Demande de la quantité souhaité
+
+# nb_item=input(" indiquer la quantité souhaite (max = {} )".format(qte))
+# uuid = re.findall(r"data-uuid=\"\d+.*\d+\"",reponse)
+# item_uuid = re.findall(r"\d+.*\d+",uuid[0])
+# uuid_f = ', '.join(item_uuid)
+
+# #Ajout de la quantité indiqué :
+
+# f={'pid':pid,'quantity':nb_item,'uuid':uuid_f}
+# encoded = urllib.parse.urlencode(f)
+# url_qte = '/on/demandware.store/Sites-snse-FR-Site/fr_FR/Cart-UpdateQuantity?' + encoded
+# reponse = req.request(url_qte,
+#     headers= {
+#         'Cache-Control': 'no-cache',
+#         'Connection': 'keep-alive',
+#         'DNT': '1',
+#         'Pragma': 'no-cache',
+#         'Upgrade-Insecure-Requests': '1',
+#     }
+# )
+
+# print(reponse)
