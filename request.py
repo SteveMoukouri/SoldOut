@@ -204,7 +204,7 @@ class Request(Log):
             self.White("[@] {} {}://{}{}".format(method.upper(), protocol, self.host, url))
 
         # Envoie et Recoie
-        print("J'ai fini l'entête")
+
         data = self.create_req(url, method, cookies, body, headers)
         if self.ssl:
             

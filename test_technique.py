@@ -23,13 +23,9 @@ reponse = req.request('/registration',
 if reponse is None:
     print("ERROR")
     exit()
-print("l'erreur est ici? \n")
 matches = re.findall(r"<input type=\"hidden\" name=\"csrf_token\" value=\"*(.*)\"",reponse)
-print("\n")
-print(matches)
 print("le token vaut :  {}.".format(matches[0]))
 csrf=matches[0]
-print(csrf)
 
 # Demande des parametres de creation du compte :
 
@@ -93,16 +89,11 @@ size = ', '.join(final_size)
 size_string = size.replace('data-value=', 'size = ').replace(',', ' or ')
 choix=input("choisissez une taille parmis : " + size_string)
 print('\n')
-print(choix)
 f={'chosen=size&dwvar_00013801853801_212':choix}
 choix_t = urllib.parse.urlencode(f)
-print("\n")
-print(choix_t)
 
 # Creation de l'url pour avoir la bonne taille :
 size_url = url_p[0] + "?" + choix_t
-print("\n")
-print(size_url)
 
 # Recupération des données utiles pour l'ajout au panier :
 reponse = req.request(url=size_url,
@@ -130,15 +121,13 @@ var2=':"{}"'.format(option)
 var3=',"selectedValueId":"{}"'.format(choix)
 var4='}]'
 vartot=var+var2+var3+var4
-print("\n VARTOT vAUT :")
-print(vartot)
 f={'pid':pid,'options':vartot,'quantity':'1'}
 param = urllib.parse.urlencode(f)
 
 # Finalisation de l'ajout au panier
 
 print('\n')
-print(param)
+
 reponse = req.request('/on/demandware.store/Sites-snse-FR-Site/fr_FR/Cart-AddProduct',method="post",body=param,
     headers= {
         'Cache-Control': 'no-cache',
